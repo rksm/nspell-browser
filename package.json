@@ -1,0 +1,20 @@
+{
+  "name": "nspell-browser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf build/* && webpack"
+  },
+  "author": "Robert Krahn",
+  "license": "MIT",
+  "devDependencies": {
+    "buffer-loader": "0.0.1",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "dictionary-en-us": "^2.0.0",
+    "nspell": "^1.0.4"
+  }
+}
