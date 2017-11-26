@@ -14,7 +14,7 @@
     "webpack": "^3.8.1"
   },
   "dependencies": {
-    "dictionary-en-us": "^2.0.0",
+    "dictionaries": "https://github.com/wooorm/dictionaries",
     "nspell": "^1.0.4"
   }
 }
