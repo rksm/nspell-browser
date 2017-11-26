@@ -20,15 +20,19 @@ const webpack = require('webpack'),
           })
         ]
       },
-      MAX_SIZE = 2 ** 21;
+      MAX_SIZE = 2 ** 21,
+      minify = false;
 
 buildAll().then(() => console.log("DONE")).catch(err => console.error(err));
 
-async function buildAll() {  
+async function buildAll() {
   var langs = fs.readdirSync("./node_modules/dictionaries/dictionaries/");
   !fs.existsSync("./src") && fs.mkdirSync("./src");
+
   for (let lang of langs) {
-    if (fs.statSync(`./node_modules/dictionaries/dictionaries/${lang}/index.dic`).size > MAX_SIZE) {
+    let affStat = fs.statSync(`./node_modules/dictionaries/dictionaries/${lang}/index.aff`),
+        dicStat = fs.statSync(`./node_modules/dictionaries/dictionaries/${lang}/index.dic`);
+    if (affStat.size > MAX_SIZE || dicStat.size > MAX_SIZE) {
       console.log(`Skipping ${lang}, too big to bundle`);
       continue;
     }
@@ -41,13 +45,9 @@ async function buildAll() {
     fs.writeFileSync(fname, template(lang));
 
     // 2. build with webpack
-    await build({
-      ...config,
-      entry: {
-        [target]: fname,
-        [target + ".min"]: fname
-      }
-    });
+    let entry = {[target]: fname};
+    if (minify) entry[target + ".min"] = fname;
+    await build({...config, entry});
 
     fs.unlinkSync(fname);
   }
